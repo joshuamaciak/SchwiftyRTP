@@ -10,6 +10,8 @@
 		8BBB644F2036153800E7F29A /* SchwiftyRTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BBB64452036153800E7F29A /* SchwiftyRTP.framework */; };
 		8BBB64542036153800E7F29A /* SchwiftyRTPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB64532036153800E7F29A /* SchwiftyRTPTests.swift */; };
 		8BBB64562036153800E7F29A /* SchwiftyRTP.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BBB64482036153800E7F29A /* SchwiftyRTP.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BBB64612036170100E7F29A /* RtpHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB64602036170100E7F29A /* RtpHeader.swift */; };
+		8BBB649F203E189600E7F29A /* RtcpPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB649E203E189600E7F29A /* RtcpPacket.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +31,8 @@
 		8BBB644E2036153800E7F29A /* SchwiftyRTPTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SchwiftyRTPTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BBB64532036153800E7F29A /* SchwiftyRTPTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchwiftyRTPTests.swift; sourceTree = "<group>"; };
 		8BBB64552036153800E7F29A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8BBB64602036170100E7F29A /* RtpHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtpHeader.swift; sourceTree = "<group>"; };
+		8BBB649E203E189600E7F29A /* RtcpPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcpPacket.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +75,7 @@
 		8BBB64472036153800E7F29A /* SchwiftyRTP */ = {
 			isa = PBXGroup;
 			children = (
+				8BBB645F203616B600E7F29A /* Packets */,
 				8BBB64482036153800E7F29A /* SchwiftyRTP.h */,
 				8BBB64492036153800E7F29A /* Info.plist */,
 			);
@@ -84,6 +89,15 @@
 				8BBB64552036153800E7F29A /* Info.plist */,
 			);
 			path = SchwiftyRTPTests;
+			sourceTree = "<group>";
+		};
+		8BBB645F203616B600E7F29A /* Packets */ = {
+			isa = PBXGroup;
+			children = (
+				8BBB64602036170100E7F29A /* RtpHeader.swift */,
+				8BBB649E203E189600E7F29A /* RtcpPacket.swift */,
+			);
+			path = Packets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,6 +162,7 @@
 				TargetAttributes = {
 					8BBB64442036153800E7F29A = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 					8BBB644D2036153800E7F29A = {
@@ -196,6 +211,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BBB649F203E189600E7F29A /* RtcpPacket.swift in Sources */,
+				8BBB64612036170100E7F29A /* RtpHeader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +351,7 @@
 		8BBB645A2036153800E7F29A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -347,6 +365,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jmaciak.SchwiftyRTP;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -355,6 +374,7 @@
 		8BBB645B2036153800E7F29A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -376,6 +396,7 @@
 		8BBB645D2036153800E7F29A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M4NG8H85KW;
 				INFOPLIST_FILE = SchwiftyRTPTests/Info.plist;
@@ -390,6 +411,7 @@
 		8BBB645E2036153800E7F29A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M4NG8H85KW;
 				INFOPLIST_FILE = SchwiftyRTPTests/Info.plist;
