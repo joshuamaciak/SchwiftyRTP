@@ -116,6 +116,38 @@ class SchwiftyRTPTests: XCTestCase {
             }
         }
     }
+    
+    func testSdesPacketBuilder() {
+        let original = SdesPacket()
+        original.header = SdesPacketHeader(RtpVersion.VERSION_2, false, 1, 2)
+        original.chunks = [SdesPacket.SdesChunk(3203232, [SdesItemFactory.create(1, "josh@maciak.com")])]
+        let builder = SdesPacket.Builder()
+        
+        builder.setVersion(RtpVersion.VERSION_2)
+                .setPaddingFlag(false)
+                .addSdesItem(ssrc: 3203232, SdesItemFactory.create(1, "josh@maciak.com"))
+        
+        
+        let builtPacket = builder.build()
+        
+        assert(original.chunks[0].src == builtPacket.chunks[0].src)
+        
+    }
+    func testSdesPacketPack() {
+        let builder = SdesPacket.Builder()
+        
+        builder.setVersion(RtpVersion.VERSION_2)
+            .setPaddingFlag(false)
+            .addSdesItem(ssrc: 3203232, SdesItemFactory.create(1, "josh@maciak.com"))
+            .addSdesItem(ssrc: 1, SdesItemFactory.create(2, "JMAC"))
+        let built = builder.build()
+        let packed = SdesPacket.pack(packet: built)
+        RtpHeader.printBytes(bytes: packed)
+        
+        let unpacked = SdesPacket.unpack(packed: packed)
+        
+        
+    }
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
