@@ -11,7 +11,7 @@ import Foundation
 public class RtcpPacket {
     
 }
-public class RtcpHeader {
+public class RtcpReportHeader {
     var version: RtpVersion
     var padding: Bool
     var receptionCount: UInt8
@@ -30,7 +30,7 @@ public class RtcpHeader {
 }
 
 public class ReceiverReport: RtcpPacket {
-    var header: RtcpHeader
+    var header: RtcpReportHeader
     
     var fractionLost: UInt8
     var packetsLost: UInt32
@@ -39,7 +39,7 @@ public class ReceiverReport: RtcpPacket {
     var lastSenderReportTimestamp: UInt32
     var delaySinceLastSenderReport: UInt32
     
-    init(_ header: RtcpHeader, _ fractionLost: UInt8, _ packetsLost: UInt32, _ extHighestSequenceNumberReceived: UInt32, _ interarrivalJitter: UInt32,
+    init(_ header: RtcpReportHeader, _ fractionLost: UInt8, _ packetsLost: UInt32, _ extHighestSequenceNumberReceived: UInt32, _ interarrivalJitter: UInt32,
          _ lastSenderReportTimestamp: UInt32, _ delaySinceLastSenderReport: UInt32) {
         self.header = header
         self.fractionLost = fractionLost
@@ -53,7 +53,7 @@ public class ReceiverReport: RtcpPacket {
 }
 
 public class SenderReport:  RtcpPacket {
-    var header: RtcpHeader
+    var header: RtcpReportHeader
     var senderInformation: SenderInformation
     var reportBlocks: [ReceiverReport]
     
@@ -69,7 +69,7 @@ public class SenderReport:  RtcpPacket {
             self.payloadOctetsSent = payloadOctetsSent
         }
     }
-    init(_ header: RtcpHeader, _ senderInformation: SenderInformation, _ reportBlocks: [ReceiverReport]) {
+    init(_ header: RtcpReportHeader, _ senderInformation: SenderInformation, _ reportBlocks: [ReceiverReport]) {
         self.header = header
         self.senderInformation = senderInformation
         self.reportBlocks = reportBlocks

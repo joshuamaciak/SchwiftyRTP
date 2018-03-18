@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class SdesPacketHeader {
+public class RtcpSdesHeader {
     var version: RtpVersion
     var padding: Bool
     var sourceCount: UInt8
@@ -28,7 +28,7 @@ public class SdesPacketHeader {
         self.sourceCount = sourceCount
         self.length = length
     }
-    public static func pack(header: SdesPacketHeader) -> [UInt8] {
+    public static func pack(header: RtcpSdesHeader) -> [UInt8] {
         var firstByte = UInt8(0)
         firstByte = firstByte | (((header.version == RtpVersion.VERSION_2) ? 2 : 1) << 6)
         firstByte = firstByte | ((header.padding) ? 1 : 0) << 5
@@ -48,7 +48,7 @@ public class SdesPacketHeader {
         return bytes
     }
     
-    public static func unpack(packed: [UInt8]) -> SdesPacketHeader? {
+    public static func unpack(packed: [UInt8]) -> RtcpSdesHeader? {
         if packed.count != 4 {
             return nil
         }
@@ -66,7 +66,7 @@ public class SdesPacketHeader {
         }
         let length = (UInt16(packed[2]) << 8) + UInt16(packed[3])
         
-        let header = SdesPacketHeader()
+        let header = RtcpSdesHeader()
         header.version = version!
         header.padding = padding
         header.sourceCount = UInt8(sourceCount)
@@ -100,14 +100,14 @@ public class SdesPacketHeader {
 }
 
 public class SdesPacket {
-    var header: SdesPacketHeader
+    var header: RtcpSdesHeader
     var chunks: [SdesChunk]
     
     init() {
-        header = SdesPacketHeader()
+        header = RtcpSdesHeader()
         chunks = [SdesChunk]()
     }
-    init(_ header: SdesPacketHeader, _ chunks: [SdesChunk]) {
+    init(_ header: RtcpSdesHeader, _ chunks: [SdesChunk]) {
         self.header = header
         self.chunks = chunks
     }
@@ -150,7 +150,7 @@ public class SdesPacket {
         var bytes = [UInt8](repeating: 0, count: data.length)
         data.getBytes(&bytes, length: bytes.count)
         packet.header.length = UInt16(bytes.count / 4)
-        var headerPacked = SdesPacketHeader.pack(header: packet.header)
+        var headerPacked = RtcpSdesHeader.pack(header: packet.header)
 
         return headerPacked + bytes
     }
@@ -160,7 +160,7 @@ public class SdesPacket {
     }
     static func unpack(packed: [UInt8]) -> SdesPacket? {
         var cpy = packed
-        let header = SdesPacketHeader.unpack(packed: [cpy[0], cpy[1], cpy[2], cpy[3]])
+        let header = RtcpSdesHeader.unpack(packed: [cpy[0], cpy[1], cpy[2], cpy[3]])
         if header == nil {
             return nil
         }
@@ -203,11 +203,11 @@ public class SdesPacket {
         return SdesPacket(header!, chunks)
     }
     class Builder {
-        var sdesHeader: SdesPacketHeader
+        var sdesHeader: RtcpSdesHeader
         var sdesChunks: [UInt32: SdesChunk]
         
         init() {
-            sdesHeader = SdesPacketHeader()
+            sdesHeader = RtcpSdesHeader()
             sdesChunks = [UInt32: SdesChunk]()
         }
         
