@@ -258,6 +258,16 @@ protocol SdesItem {
     init(_ text: String)
 }
 public class SdesItemFactory {
+    public static let SDES_NULL: UInt8     = 0;
+    public static let SDES_CNAME: UInt8    = 1;
+    public static let SDES_NAME: UInt8     = 2;
+    public static let SDES_EMAIL: UInt8    = 3;
+    public static let SDES_PHONE: UInt8    = 4;
+    public static let SDES_LOCATION: UInt8 = 5;
+    public static let SDES_TOOL: UInt8     = 6;
+    public static let SDES_NOTE: UInt8     = 7;
+    public static let SDES_PRIVATE: UInt8  = 8;
+
     static func create(_ id: UInt8, _ text: String) -> SdesItem {
         switch(id) {
             case 1:

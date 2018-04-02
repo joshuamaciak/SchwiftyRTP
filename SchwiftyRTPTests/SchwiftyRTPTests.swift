@@ -119,7 +119,7 @@ class SchwiftyRTPTests: XCTestCase {
     
     func testSdesPacketBuilder() {
         let original = SdesPacket()
-        original.header = SdesPacketHeader(RtpVersion.VERSION_2, false, 1, 2)
+        original.header = RtcpSdesHeader(RtpVersion.VERSION_2, false, 1, 2)
         original.chunks = [SdesPacket.SdesChunk(3203232, [SdesItemFactory.create(1, "josh@maciak.com")])]
         let builder = SdesPacket.Builder()
         
@@ -138,15 +138,13 @@ class SchwiftyRTPTests: XCTestCase {
         
         builder.setVersion(RtpVersion.VERSION_2)
             .setPaddingFlag(false)
-            .addSdesItem(ssrc: 3203232, SdesItemFactory.create(1, "josh@maciak.com"))
-            .addSdesItem(ssrc: 1, SdesItemFactory.create(2, "JMAC"))
+            .addSdesItem(ssrc: 3203232, SdesItemFactory.create(SdesItemFactory.SDES_CNAME, "josh@maciak.com"))
+            .addSdesItem(ssrc: 1, SdesItemFactory.create(SdesItemFactory.SDES_NAME, "JMAC"))
         let built = builder.build()
         let packed = SdesPacket.pack(packet: built)
         RtpHeader.printBytes(bytes: packed)
         
         let unpacked = SdesPacket.unpack(packed: packed)
-        
-        
     }
     func testExample() {
         // This is an example of a functional test case.
