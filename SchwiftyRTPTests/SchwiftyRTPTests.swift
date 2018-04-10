@@ -146,6 +146,19 @@ class SchwiftyRTPTests: XCTestCase {
         
         let unpacked = SdesPacket.unpack(packed: packed)
     }
+    func testByePacketPack() {
+        let byePacket = ByePacket.Builder()
+                                .addSrc(111111)
+                                .setReason("A")
+                                .setPaddingFlag(false)
+                                .build()
+        
+        let packed = ByePacket.pack(byePacket!)
+        RtpHeader.printBytes(bytes: packed)
+        
+        let unpacked = ByePacket.unpack(packed)
+        XCTAssertEqual(byePacket, unpacked)
+    }
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.

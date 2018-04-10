@@ -143,7 +143,7 @@ public class SdesPacket {
             chunkLength += 1
             // need to pad to 32-bit (4 octet) boundary
             if chunkLength % 4 != 0 {
-                var zeros = [UInt8](repeating: 0, count: chunkLength % 4)
+                var zeros = [UInt8](repeating: 0, count: 4 - chunkLength % 4)
                 data.append(&zeros, length: zeros.count)
             }
         }
