@@ -118,10 +118,10 @@ class SchwiftyRTPTests: XCTestCase {
     }
     
     func testSdesPacketBuilder() {
-        let original = SdesPacket()
+        let original = RtcpSdesPacket()
         original.header = RtcpSdesHeader(RtpVersion.VERSION_2, false, 1, 5)
-        original.chunks = [SdesPacket.SdesChunk(3203232, [SdesItem(itemId: SdesItem.SDES_CNAME, "josh@maciak.com")])]
-        let builder = SdesPacket.Builder()
+        original.chunks = [RtcpSdesPacket.SdesChunk(3203232, [SdesItem(itemId: SdesItem.SDES_CNAME, "josh@maciak.com")])]
+        let builder = RtcpSdesPacket.Builder()
         
         builder.setVersion(RtpVersion.VERSION_2)
                 .setPaddingFlag(false)
@@ -132,31 +132,31 @@ class SchwiftyRTPTests: XCTestCase {
         XCTAssertEqual(original, builtPacket)
     }
     func testSdesPacketPack() {
-        let builder = SdesPacket.Builder()
+        let builder = RtcpSdesPacket.Builder()
         
         builder.setVersion(RtpVersion.VERSION_2)
             .setPaddingFlag(false)
             .addSdesItem(ssrc: 3203232, SdesItem(itemId: SdesItem.SDES_CNAME, "josh@maciak.com"))
             .addSdesItem(ssrc: 1, SdesItem(itemId: SdesItem.SDES_NAME, "JMAC"))
         let built = builder.build()
-        let packed = SdesPacket.pack(packet: built)
+        let packed = RtcpSdesPacket.pack(packet: built)
         RtpHeader.printBytes(bytes: packed)
         
-        let unpacked = SdesPacket.unpack(packed: packed)
+        let unpacked = RtcpSdesPacket.unpack(packed: packed)
         
         XCTAssertEqual(built, unpacked!)
     }
     func testByePacketPack() {
-        let byePacket = ByePacket.Builder()
+        let byePacket = RtcpByePacket.Builder()
                                 .addSrc(111111)
                                 .setReason("A")
                                 .setPaddingFlag(false)
                                 .build()
         
-        let packed = ByePacket.pack(byePacket!)
+        let packed = RtcpByePacket.pack(byePacket!)
         RtpHeader.printBytes(bytes: packed)
         
-        let unpacked = ByePacket.unpack(packed)
+        let unpacked = RtcpByePacket.unpack(packed)
         XCTAssertEqual(byePacket, unpacked)
     }
     func testExample() {

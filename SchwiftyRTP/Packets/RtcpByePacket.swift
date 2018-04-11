@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class ByePacket: Equatable {
+public class RtcpByePacket: Equatable {
 
     
     var header: RtcpByeHeader
@@ -44,14 +44,14 @@ public class ByePacket: Equatable {
             self.reason = reason
             return self;
         }
-        public func build() -> ByePacket? {
+        public func build() -> RtcpByePacket? {
             if srcs.isEmpty {
                 return nil
             }
             self.header.sourceCount = UInt8(srcs.count)
             self.header.length = UInt16(calculatePacketSizeWords() - 1)
             
-            return ByePacket(header, srcs, reason)
+            return RtcpByePacket(header, srcs, reason)
         }
         private func calculatePacketSizeWords() -> Int {
             if reason.isEmpty {
@@ -64,7 +64,7 @@ public class ByePacket: Equatable {
         }
     }
     
-    public static func pack(_ bye: ByePacket) -> [UInt8] {
+    public static func pack(_ bye: RtcpByePacket) -> [UInt8] {
         let data = NSMutableData()
         for src in bye.srcs {
             var srcBigEndian = src.bigEndian
@@ -93,7 +93,7 @@ public class ByePacket: Equatable {
         
         return headerPacked + bytes
     }
-    public static func unpack(_ packed: [UInt8]) -> ByePacket? {
+    public static func unpack(_ packed: [UInt8]) -> RtcpByePacket? {
         let header = RtcpByeHeader.unpack(packed: Array(packed[0..<4]))
         if header == nil {
             return nil
@@ -111,16 +111,16 @@ public class ByePacket: Equatable {
         offset += 4
         // todo: need to do a length check in case of no reason for leaving
         if offset >= (header!.length)*4 {
-            return ByePacket(header!, srcs, "")
+            return RtcpByePacket(header!, srcs, "")
         }
         let reasonLength = Int(body[offset])
         offset += 1
         let reasonBytes = Array(body[offset..<offset+reasonLength])
         let reason = String(bytes: reasonBytes, encoding: .utf8)
         
-        return ByePacket(header!, srcs, reason!)
+        return RtcpByePacket(header!, srcs, reason!)
     }
-    public static func ==(lhs: ByePacket, rhs: ByePacket) -> Bool {
+    public static func ==(lhs: RtcpByePacket, rhs: RtcpByePacket) -> Bool {
         return (lhs.header == rhs.header) && (lhs.length == rhs.length) && (lhs.reason == rhs.reason)
             && (lhs.srcs == rhs.srcs)
     }

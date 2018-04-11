@@ -102,7 +102,7 @@ class RtcpSdesHeader: Equatable {
     }
 }
 
-public class SdesPacket: Equatable {
+public class RtcpSdesPacket: Equatable {
     var header: RtcpSdesHeader
     var chunks: [SdesChunk]
     
@@ -130,7 +130,7 @@ public class SdesPacket: Equatable {
         }
     }
     
-    static func pack(packet: SdesPacket) -> [UInt8] {
+    static func pack(packet: RtcpSdesPacket) -> [UInt8] {
         let data = NSMutableData()
         for chunk in packet.chunks {
             var chunkLength = 0
@@ -163,7 +163,7 @@ public class SdesPacket: Equatable {
         let textBytes = Array(item.text.utf8)
         return [item.itemId, item.length] + textBytes
     }
-    static func unpack(packed: [UInt8]) -> SdesPacket? {
+    static func unpack(packed: [UInt8]) -> RtcpSdesPacket? {
         var cpy = packed
         let header = RtcpSdesHeader.unpack(packed: [cpy[0], cpy[1], cpy[2], cpy[3]])
         if header == nil {
@@ -205,7 +205,7 @@ public class SdesPacket: Equatable {
             offset += (offset % 4)
         }
         
-        return SdesPacket(header!, chunks)
+        return RtcpSdesPacket(header!, chunks)
     }
     class Builder {
         var sdesHeader: RtcpSdesHeader
@@ -235,8 +235,8 @@ public class SdesPacket: Equatable {
             return self
         }
         
-        func build() -> SdesPacket {
-            let packet = SdesPacket()
+        func build() -> RtcpSdesPacket {
+            let packet = RtcpSdesPacket()
             sdesHeader.sourceCount = UInt8(sdesChunks.count)
             
             // length of packet in 32-bit words - 1
@@ -254,7 +254,7 @@ public class SdesPacket: Equatable {
             return packet
         }
     }
-    public static func ==(lhs: SdesPacket, rhs: SdesPacket) -> Bool {
+    public static func ==(lhs: RtcpSdesPacket, rhs: RtcpSdesPacket) -> Bool {
         return (lhs.header == rhs.header) && (lhs.chunks == rhs.chunks)
     }
 }
