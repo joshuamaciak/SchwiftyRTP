@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class RtcpSdesHeader {
+class RtcpSdesHeader: Equatable {
     var version: RtpVersion
     var padding: Bool
     var sourceCount: UInt8
@@ -97,9 +97,12 @@ public class RtcpSdesHeader {
             return Int(sourceCount)
         }
     }
+    public static func ==(lhs: RtcpSdesHeader, rhs: RtcpSdesHeader) -> Bool {
+        return (lhs.version == rhs.version) && (lhs.padding == rhs.padding) && (lhs.sourceCount == rhs.sourceCount) && (lhs.packetType == rhs.packetType) && (lhs.length == rhs.length)
+    }
 }
 
-public class SdesPacket {
+public class SdesPacket: Equatable {
     var header: RtcpSdesHeader
     var chunks: [SdesChunk]
     
@@ -111,7 +114,7 @@ public class SdesPacket {
         self.header = header
         self.chunks = chunks
     }
-    class SdesChunk {
+    class SdesChunk: Equatable {
         var src: UInt32 // either a ssrc or csrc
         var sdesItems: [SdesItem]
         init(_ src: UInt32, _ sdesItems: [SdesItem]) {
@@ -121,6 +124,9 @@ public class SdesPacket {
         init() {
             self.src = 0
             self.sdesItems = [SdesItem]()
+        }
+        static func ==(lhs: SdesChunk, rhs: SdesChunk) -> Bool {
+            return (lhs.src == rhs.src) && (lhs.sdesItems == rhs.sdesItems)
         }
     }
     
@@ -189,7 +195,7 @@ public class SdesPacket {
                 offset += sdesTextLength
                 
                 if let sdesText = String(bytes: sdesTextBytes, encoding: .utf8) {
-                    chunk.sdesItems.append(SdesItemFactory.create(sdesType, sdesText))
+                    chunk.sdesItems.append(SdesItem(itemId: sdesType, sdesText))
                 } else {
                     assert(true, "sdes text field is invalid.")
                     return nil
@@ -249,157 +255,36 @@ public class SdesPacket {
             return packet
         }
     }
-}
-
-protocol SdesItem {
-    var itemId: UInt8 { get }
-    var length: UInt8 { get }
-    var text: String { get }
-    init(_ text: String)
-}
-public class SdesItemFactory {
-    public static let SDES_NULL: UInt8     = 0;
-    public static let SDES_CNAME: UInt8    = 1;
-    public static let SDES_NAME: UInt8     = 2;
-    public static let SDES_EMAIL: UInt8    = 3;
-    public static let SDES_PHONE: UInt8    = 4;
-    public static let SDES_LOCATION: UInt8 = 5;
-    public static let SDES_TOOL: UInt8     = 6;
-    public static let SDES_NOTE: UInt8     = 7;
-    public static let SDES_PRIVATE: UInt8  = 8;
-
-    static func create(_ id: UInt8, _ text: String) -> SdesItem {
-        switch(id) {
-            case 1:
-                return CnameSdesItem(text)
-            case 2:
-                return NameSdesItem(text)
-            case 3:
-                return EmailSdesItem(text)
-            case 4:
-                return PhoneSdesItem(text)
-            case 5:
-                return LocationSdesItem(text)
-            case 6:
-                return ToolSdesItem(text)
-            case 7:
-                return NoteSdesItem(text)
-            case 8:
-                return PrivateSdesItem(text)
-            default:
-                return NullSdesItem()
-        }
-    }
-}
-private class CnameSdesItem: SdesItem {
-    public var itemId: UInt8 = 1
-    public var length: UInt8 {
-        return UInt8(text.count)
-    }
-    public var text: String
-
-    required init(_ text: String) {
-        self.text = text;
+    public static func ==(lhs: SdesPacket, rhs: SdesPacket) -> Bool {
+        return (lhs.header == rhs.header) && (lhs.chunks == rhs.chunks)
     }
 }
 
-private class NameSdesItem: SdesItem {
-    public var itemId: UInt8 = 2
-    public var length: UInt8 {
-        return UInt8(text.count)
+class SdesItem: Equatable {
+    static func ==(lhs: SdesItem, rhs: SdesItem) -> Bool {
+        return (lhs.itemId == rhs.itemId) && (lhs.length == rhs.length) && (lhs.text == rhs.text)
     }
-    public var text: String
     
-    required init(_ text: String) {
-        self.text = text;
+    public static let SDES_NULL: UInt8     = 0
+    public static let SDES_CNAME: UInt8    = 1
+    public static let SDES_NAME: UInt8     = 2
+    public static let SDES_EMAIL: UInt8    = 3
+    public static let SDES_PHONE: UInt8    = 4
+    public static let SDES_LOCATION: UInt8 = 5
+    public static let SDES_TOOL: UInt8     = 6
+    public static let SDES_NOTE: UInt8     = 7
+    public static let SDES_PRIVATE: UInt8  = 8
+    
+    var itemId: UInt8
+    var length: UInt8
+    var text: String
+    
+    init(itemId: UInt8, _ text: String) {
+        self.itemId = itemId
+        self.text   = text
+        self.length = UInt8(text.lengthOfBytes(using: .utf8))
     }
+    
+    
 }
 
-private class EmailSdesItem: SdesItem {
-    var itemId: UInt8 = 3
-    public var length: UInt8 {
-        return UInt8(text.count)
-    }
-    public var text: String
-    
-    required init(_ text: String) {
-        self.text = text;
-    }
-}
-
-private class PhoneSdesItem: SdesItem {
-    var itemId: UInt8 = 4
-    public var length: UInt8 {
-        return UInt8(text.count)
-    }
-    public var text: String
-    
-    required init(_ text: String) {
-        self.text = text;
-    }
-}
-
-private class LocationSdesItem: SdesItem {
-    var itemId: UInt8 = 5
-    public var length: UInt8 {
-        return UInt8(text.count)
-    }
-    public var text: String
-    
-    required init(_ text: String) {
-        self.text = text;
-    }
-}
-
-private class ToolSdesItem: SdesItem {
-    var itemId: UInt8 = 6
-    public var length: UInt8 {
-        return UInt8(text.count)
-    }
-    public var text: String
-    
-    required init(_ text: String) {
-        self.text = text;
-    }
-}
-
-private class NoteSdesItem: SdesItem {
-    var itemId: UInt8 = 7
-    public var length: UInt8 {
-        return UInt8(text.count)
-    }
-    public var text: String
-    
-    required init(_ text: String) {
-        self.text = text;
-    }
-}
-// an empty item used to signify the end of the
-// chunk list of sdes items & to pad chunks to the
-// nearest 32-bit boundary
-private class NullSdesItem: SdesItem {
-    var itemId: UInt8 = 0
-    public var length: UInt8 {
-        return UInt8(text.count)
-    }
-    public var text: String
-    
-    required init(_ text: String) {
-        self.text = ""
-    }
-    init() {
-        self.text = ""
-    }
-}
-// todo: needs fixing
-private class PrivateSdesItem: SdesItem {
-    var itemId: UInt8 = 8
-    public var length: UInt8 {
-        return UInt8(text.count)
-    }
-    public var text: String
-    
-    required init(_ text: String) {
-        self.text = text;
-    }
-}

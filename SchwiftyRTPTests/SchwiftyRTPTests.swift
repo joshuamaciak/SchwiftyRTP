@@ -120,31 +120,31 @@ class SchwiftyRTPTests: XCTestCase {
     func testSdesPacketBuilder() {
         let original = SdesPacket()
         original.header = RtcpSdesHeader(RtpVersion.VERSION_2, false, 1, 2)
-        original.chunks = [SdesPacket.SdesChunk(3203232, [SdesItemFactory.create(1, "josh@maciak.com")])]
+        original.chunks = [SdesPacket.SdesChunk(3203232, [SdesItem(itemId: SdesItem.SDES_CNAME, "josh@maciak.com")])]
         let builder = SdesPacket.Builder()
         
         builder.setVersion(RtpVersion.VERSION_2)
                 .setPaddingFlag(false)
-                .addSdesItem(ssrc: 3203232, SdesItemFactory.create(1, "josh@maciak.com"))
+            .addSdesItem(ssrc: 3203232, SdesItem(itemId: SdesItem.SDES_CNAME, "josh@maciak.com"))
         
         
         let builtPacket = builder.build()
-        
-        assert(original.chunks[0].src == builtPacket.chunks[0].src)
-        
+        XCTAssertEqual(original, builtPacket)
     }
     func testSdesPacketPack() {
         let builder = SdesPacket.Builder()
         
         builder.setVersion(RtpVersion.VERSION_2)
             .setPaddingFlag(false)
-            .addSdesItem(ssrc: 3203232, SdesItemFactory.create(SdesItemFactory.SDES_CNAME, "josh@maciak.com"))
-            .addSdesItem(ssrc: 1, SdesItemFactory.create(SdesItemFactory.SDES_NAME, "JMAC"))
+            .addSdesItem(ssrc: 3203232, SdesItem(itemId: SdesItem.SDES_CNAME, "josh@maciak.com"))
+            .addSdesItem(ssrc: 1, SdesItem(itemId: SdesItem.SDES_NAME, "JMAC"))
         let built = builder.build()
         let packed = SdesPacket.pack(packet: built)
         RtpHeader.printBytes(bytes: packed)
         
         let unpacked = SdesPacket.unpack(packed: packed)
+        
+        XCTAssertEqual(built, unpacked!)
     }
     func testByePacketPack() {
         let byePacket = ByePacket.Builder()
