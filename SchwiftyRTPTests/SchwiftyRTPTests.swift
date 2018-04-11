@@ -119,7 +119,7 @@ class SchwiftyRTPTests: XCTestCase {
     
     func testSdesPacketBuilder() {
         let original = SdesPacket()
-        original.header = RtcpSdesHeader(RtpVersion.VERSION_2, false, 1, 2)
+        original.header = RtcpSdesHeader(RtpVersion.VERSION_2, false, 1, 5)
         original.chunks = [SdesPacket.SdesChunk(3203232, [SdesItem(itemId: SdesItem.SDES_CNAME, "josh@maciak.com")])]
         let builder = SdesPacket.Builder()
         

@@ -132,7 +132,6 @@ public class SdesPacket: Equatable {
     
     static func pack(packet: SdesPacket) -> [UInt8] {
         let data = NSMutableData()
-        //data.append(&headerPacked, length: headerPacked.count)
         for chunk in packet.chunks {
             var chunkLength = 0
             var srcBigEndian = chunk.src.bigEndian
@@ -249,7 +248,7 @@ public class SdesPacket: Equatable {
                 }
             }
 
-            sdesHeader.length = UInt16(ceil(Double(lengthBytes) / 4) - 1)
+            sdesHeader.length = UInt16(ceil(Double(lengthBytes) / 4))
             packet.header = sdesHeader
             packet.chunks = Array(sdesChunks.values)
             return packet
