@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B4978F4204A078200CC23DA /* RtcpSdesPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4978F3204A078200CC23DA /* RtcpSdesPacket.swift */; };
+		8B7EF4D32072EFA3007902E5 /* RtcpByePacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7EF4D22072EFA3007902E5 /* RtcpByePacket.swift */; };
 		8BBB644F2036153800E7F29A /* SchwiftyRTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BBB64452036153800E7F29A /* SchwiftyRTP.framework */; };
 		8BBB64542036153800E7F29A /* SchwiftyRTPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB64532036153800E7F29A /* SchwiftyRTPTests.swift */; };
 		8BBB64562036153800E7F29A /* SchwiftyRTP.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BBB64482036153800E7F29A /* SchwiftyRTP.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -25,6 +27,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B4978F3204A078200CC23DA /* RtcpSdesPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcpSdesPacket.swift; sourceTree = "<group>"; };
+		8B7EF4D22072EFA3007902E5 /* RtcpByePacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtcpByePacket.swift; sourceTree = "<group>"; };
 		8BBB64452036153800E7F29A /* SchwiftyRTP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SchwiftyRTP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BBB64482036153800E7F29A /* SchwiftyRTP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SchwiftyRTP.h; sourceTree = "<group>"; };
 		8BBB64492036153800E7F29A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -96,6 +100,8 @@
 			children = (
 				8BBB64602036170100E7F29A /* RtpHeader.swift */,
 				8BBB649E203E189600E7F29A /* RtcpPacket.swift */,
+				8B4978F3204A078200CC23DA /* RtcpSdesPacket.swift */,
+				8B7EF4D22072EFA3007902E5 /* RtcpByePacket.swift */,
 			);
 			path = Packets;
 			sourceTree = "<group>";
@@ -211,7 +217,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B4978F4204A078200CC23DA /* RtcpSdesPacket.swift in Sources */,
 				8BBB649F203E189600E7F29A /* RtcpPacket.swift in Sources */,
+				8B7EF4D32072EFA3007902E5 /* RtcpByePacket.swift in Sources */,
 				8BBB64612036170100E7F29A /* RtpHeader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

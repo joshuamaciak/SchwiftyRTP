@@ -116,6 +116,49 @@ class SchwiftyRTPTests: XCTestCase {
             }
         }
     }
+    
+    func testSdesPacketBuilder() {
+        let original = RtcpSdesPacket()
+        original.header = RtcpSdesHeader(RtpVersion.VERSION_2, false, 1, 5)
+        original.chunks = [RtcpSdesPacket.SdesChunk(3203232, [SdesItem(itemId: SdesItem.SDES_CNAME, "josh@maciak.com")])]
+        let builder = RtcpSdesPacket.Builder()
+        
+        builder.setVersion(RtpVersion.VERSION_2)
+                .setPaddingFlag(false)
+            .addSdesItem(ssrc: 3203232, SdesItem(itemId: SdesItem.SDES_CNAME, "josh@maciak.com"))
+        
+        
+        let builtPacket = builder.build()
+        XCTAssertEqual(original, builtPacket)
+    }
+    func testSdesPacketPack() {
+        let builder = RtcpSdesPacket.Builder()
+        
+        builder.setVersion(RtpVersion.VERSION_2)
+            .setPaddingFlag(false)
+            .addSdesItem(ssrc: 3203232, SdesItem(itemId: SdesItem.SDES_CNAME, "josh@maciak.com"))
+            .addSdesItem(ssrc: 1, SdesItem(itemId: SdesItem.SDES_NAME, "JMAC"))
+        let built = builder.build()
+        let packed = RtcpSdesPacket.pack(packet: built)
+        RtpHeader.printBytes(bytes: packed)
+        
+        let unpacked = RtcpSdesPacket.unpack(packed: packed)
+        
+        XCTAssertEqual(built, unpacked!)
+    }
+    func testByePacketPack() {
+        let byePacket = RtcpByePacket.Builder()
+                                .addSrc(111111)
+                                .setReason("A")
+                                .setPaddingFlag(false)
+                                .build()
+        
+        let packed = RtcpByePacket.pack(byePacket!)
+        RtpHeader.printBytes(bytes: packed)
+        
+        let unpacked = RtcpByePacket.unpack(packed)
+        XCTAssertEqual(byePacket, unpacked)
+    }
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
