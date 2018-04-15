@@ -36,7 +36,7 @@ public class RtcpPacket: Equatable {
     }
     
 }
-public class RtcpReportHeader {
+public class RtcpReportHeader: Equatable {
     var version: RtpVersion
     var padding: Bool
     var reportCount: UInt8
@@ -113,9 +113,13 @@ public class RtcpReportHeader {
             return Int(sourceCount)
         }
     }
+    
+    public static func ==(lhs: RtcpReportHeader, rhs: RtcpReportHeader) -> Bool {
+        return (lhs.version == rhs.version) && (lhs.padding == rhs.padding) && (lhs.reportCount == rhs.reportCount) && (lhs.packetType == rhs.packetType) && (lhs.length == rhs.length) && (lhs.ssrc == rhs.ssrc)
+    }
 }
 
-class RtcpReportBlock {
+class RtcpReportBlock: Equatable {
     var ssrc: UInt32
     var fractionLost: UInt8
     var packetsLost: UInt32
@@ -181,6 +185,9 @@ class RtcpReportBlock {
         
         return RtcpReportBlock(ssrc, fractionLost, packetsLost, extHighestSeq, jitter, lastSenderReportTimestamp, delaySinceLastSenderReport)
     }
+    static func ==(lhs: RtcpReportBlock, rhs: RtcpReportBlock) -> Bool {
+        return (lhs.ssrc == rhs.ssrc) && (lhs.fractionLost == rhs.fractionLost) && (lhs.packetsLost == rhs.packetsLost) && (lhs.extHighestSequenceNumberReceived == rhs.extHighestSequenceNumberReceived) && (lhs.interarrivalJitter == rhs.interarrivalJitter) && (lhs.lastSenderReportTimestamp == rhs.lastSenderReportTimestamp) && (lhs.delaySinceLastSenderReport == rhs.delaySinceLastSenderReport)
+    }
 }
 
 public class ReceiverReport: RtcpPacket {
@@ -235,6 +242,17 @@ public class ReceiverReport: RtcpPacket {
         return ReceiverReport(header!, blocks)
     }
     
+    override func equal(to: RtcpPacket) -> Bool {
+        if let sub = to as? ReceiverReport {
+            return (self.header == sub.header) && (self.reportBlocks == sub.reportBlocks)
+        }
+        return false
+    }
+    
+    public static func ==(lhs: ReceiverReport, rhs: ReceiverReport) -> Bool {
+        return lhs.equal(to: rhs)
+    }
+    
 }
 
 public class SenderReport:  RtcpPacket {
@@ -273,9 +291,19 @@ public class SenderReport:  RtcpPacket {
         return headerPacked + senderInfoPacked + bodyPacked
     }
     
+    override func equal(to: RtcpPacket) -> Bool {
+        if let sub = to as? SenderReport {
+            return (self.header == sub.header) && (self.senderInformation == sub.senderInformation) && (self.reportBlocks == sub.reportBlocks)
+        }
+        return false
+    }
+    
+    public static func ==(lhs: SenderReport, rhs: SenderReport) -> Bool {
+        return lhs.equal(to: rhs)
+    }
 }
 
-class SenderInformation {
+class SenderInformation: Equatable {
     var ntpTimestamp: UInt64
     var rtpTimestamp: UInt32
     var packetsSent: UInt32
@@ -322,6 +350,10 @@ class SenderInformation {
         payloadOctetsSent += (UInt32(packed[18]) << 8) + (UInt32(packed[19]))
         
         return SenderInformation(ntpTimestamp, rtpTimestamp, packetsSent, payloadOctetsSent)
+    }
+    
+    static func ==(lhs: SenderInformation, rhs: SenderInformation) -> Bool {
+        return (lhs.ntpTimestamp == rhs.ntpTimestamp) && (lhs.rtpTimestamp == rhs.rtpTimestamp) && (lhs.packetsSent == rhs.packetsSent) && (lhs.payloadOctetsSent == rhs.payloadOctetsSent)
     }
 }
 
