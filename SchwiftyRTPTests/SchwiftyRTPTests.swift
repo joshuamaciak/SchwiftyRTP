@@ -157,7 +157,7 @@ class SchwiftyRTPTests: XCTestCase {
         RtpHeader.printBytes(bytes: packed)
         
         let unpacked = RtcpByePacket.unpack(packed)
-        XCTAssertEqual(byePacket, unpacked)
+        XCTAssertEqual(byePacket as! RtcpPacket, unpacked)
     }
     func testExample() {
         // This is an example of a functional test case.

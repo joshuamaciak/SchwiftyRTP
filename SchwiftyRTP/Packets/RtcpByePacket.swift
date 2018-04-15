@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class RtcpByePacket: Equatable {
+public class RtcpByePacket: RtcpPacket {
 
     
     var header: RtcpByeHeader
@@ -120,6 +120,15 @@ public class RtcpByePacket: Equatable {
         
         return RtcpByePacket(header!, srcs, reason!)
     }
+    
+    override func equal(to: RtcpPacket) -> Bool {
+        if let sub = to as? RtcpByePacket {
+            return (self.header == sub.header) && (self.length == sub.length) && (self.reason == sub.reason)
+                && (self.srcs == sub.srcs)
+        }
+        return false
+    }
+    
     public static func ==(lhs: RtcpByePacket, rhs: RtcpByePacket) -> Bool {
         return (lhs.header == rhs.header) && (lhs.length == rhs.length) && (lhs.reason == rhs.reason)
             && (lhs.srcs == rhs.srcs)
@@ -215,6 +224,7 @@ class RtcpByeHeader: Equatable {
             return Int(sourceCount)
         }
     }
+    
     static func ==(lhs: RtcpByeHeader, rhs: RtcpByeHeader) -> Bool {
         return (lhs.version == rhs.version) && (lhs.padding == rhs.padding) && (lhs.sourceCount == rhs.sourceCount) && (lhs.packetType == rhs.packetType) && (lhs.length == rhs.length)
     }

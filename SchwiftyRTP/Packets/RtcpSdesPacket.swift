@@ -102,11 +102,11 @@ class RtcpSdesHeader: Equatable {
     }
 }
 
-public class RtcpSdesPacket: Equatable {
+public class RtcpSdesPacket: RtcpPacket {
     var header: RtcpSdesHeader
     var chunks: [SdesChunk]
     
-    init() {
+    override init() {
         header = RtcpSdesHeader()
         chunks = [SdesChunk]()
     }
@@ -254,8 +254,16 @@ public class RtcpSdesPacket: Equatable {
             return packet
         }
     }
+    
+    override func equal(to: RtcpPacket) -> Bool {
+        if let sub = to as? RtcpSdesPacket {
+            return (self.header == sub.header) && (self.chunks == sub.chunks)
+        }
+        return false
+    }
+    
     public static func ==(lhs: RtcpSdesPacket, rhs: RtcpSdesPacket) -> Bool {
-        return (lhs.header == rhs.header) && (lhs.chunks == rhs.chunks)
+        return lhs.equal(to: rhs)
     }
 }
 

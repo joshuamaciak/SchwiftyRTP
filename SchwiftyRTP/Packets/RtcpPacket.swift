@@ -24,7 +24,16 @@ public class RtcpCompoundPacket {
     
     
 }
-public class RtcpPacket {
+
+public class RtcpPacket: Equatable {
+    public static func ==(lhs: RtcpPacket, rhs: RtcpPacket) -> Bool {
+        return lhs.equal(to: rhs)
+    }
+    
+    func equal(to: RtcpPacket) -> Bool {
+        // this should ALWAYS be overriden in the subclass
+        return false
+    }
     
 }
 public class RtcpReportHeader {

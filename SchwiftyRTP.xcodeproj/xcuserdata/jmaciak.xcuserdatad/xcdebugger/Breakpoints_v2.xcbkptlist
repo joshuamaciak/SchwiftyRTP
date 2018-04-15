@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SchwiftyRTPTests/SchwiftyRTPTests.swift"
+            timestampString = "545466140.174947"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "testRtpHeaderPack()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SchwiftyRTPTests/SchwiftyRTPTests.swift"
+            timestampString = "545466140.175383"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
+            landmarkName = "testSdesPacketPack()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SchwiftyRTPTests.SchwiftyRTPTests.testSdesPacketPack() -&gt; ()"
+                  moduleName = "SchwiftyRTPTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jmaciak/Documents/Xcode%20Projects/SchwiftyRTP/SchwiftyRTPTests/SchwiftyRTPTests.swift"
+                  timestampString = "545466141.293291"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "147"
+                  endingLineNumber = "147"
+                  offsetFromSymbolStart = "451">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "implicit closure #2 : @autoclosure () throws -&gt; SchwiftyRTP.RtcpSdesPacket in SchwiftyRTPTests.SchwiftyRTPTests.testSdesPacketPack() -&gt; ()"
+                  moduleName = "SchwiftyRTPTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jmaciak/Documents/Xcode%20Projects/SchwiftyRTP/SchwiftyRTPTests/SchwiftyRTPTests.swift"
+                  timestampString = "545466141.296389"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "147"
+                  endingLineNumber = "147"
+                  offsetFromSymbolStart = "12">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
